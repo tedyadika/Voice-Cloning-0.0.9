@@ -1,5 +1,6 @@
-from scipy.ndimage.morphology import binary_dilation
-from encoder.params_data import *
+from scipy import ndimage
+#from scipy.ndimage.morphology import binary_dilation
+from params_data import *
 from pathlib import Path
 from typing import Optional, Union
 from warnings import warn
@@ -102,7 +103,7 @@ def trim_long_silences(wav):
     audio_mask = np.round(audio_mask).astype(np.bool)
     
     # Dilate the voiced regions
-    audio_mask = binary_dilation(audio_mask, np.ones(vad_max_silence_length + 1))
+    audio_mask = ndimage.binary_dilation(audio_mask, np.ones(vad_max_silence_length + 1))
     audio_mask = np.repeat(audio_mask, samples_per_window)
     
     return wav[audio_mask == True]
